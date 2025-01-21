@@ -16,15 +16,15 @@ export class Graph<Node> {
   #roots: TGraphRootSet = new Set()
 
   getAllRoots(): TGraphRootSet {
-    return structuredClone(this.#roots)
+    return this.#roots
   }
 
   getAllNodes(): TGraphNodeMap<Node> {
-    return structuredClone(this.#nodes)
+    return this.#nodes
   }
 
   getAllEdges(): TGraphEdgeMap {
-    return structuredClone(this.#edges)
+    return this.#edges
   }
 
   filterNodes(predicate: (node: TGraphNode<Node>) => boolean): TGraphNodeMap<Node> {
@@ -61,7 +61,7 @@ export class Graph<Node> {
       return undefined
     }
 
-    return structuredClone(node)
+    return node
   }
 
   hasNode(nodeId: TGraphNodeId): boolean {
@@ -83,7 +83,7 @@ export class Graph<Node> {
       return undefined
     }
 
-    return structuredClone(edge)
+    return edge
   }
 
   hasEdge(edgeId: string): boolean {

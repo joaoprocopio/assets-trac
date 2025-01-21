@@ -7,6 +7,7 @@ export type TFlatTreeNode<Node> = TGraphNode<Node> & {
 export type TFlatTree<Node> = TFlatTreeNode<Node>[]
 
 export function buildFlatTree<Node>(graph: Graph<Node>): TFlatTree<Node> {
+  console.profile("buildFlatTree")
   const flatTree: TFlatTree<Node> = []
   const visited = new Set<TGraphNodeId>()
 
@@ -38,6 +39,8 @@ export function buildFlatTree<Node>(graph: Graph<Node>): TFlatTree<Node> {
   for (const rootNodeId of graph.getAllRoots()) {
     traverse(rootNodeId)
   }
+
+  console.profileEnd("buildFlatTree")
 
   return flatTree
 }
