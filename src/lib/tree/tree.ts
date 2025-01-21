@@ -11,26 +11,18 @@ export function buildFlatTree<Node>(graph: Graph<Node>): TFlatTree<Node> {
   const visited = new Set<TGraphNodeId>()
 
   function traverse(nodeId: TGraphNodeId, level: number = 0): void {
-    if (visited.has(nodeId)) {
-      return undefined
-    }
+    const node = graph.getNode(nodeId) as TFlatTreeNode<Node>
 
     visited.add(nodeId)
-
-    const node = graph.getNode(nodeId) as TFlatTreeNode<Node> | undefined
-
-    if (!node) {
-      return undefined
-    }
 
     node.level = level
     flatTree.push(node)
 
-    if (!graph.hasEdge(nodeId)) {
+    const edge = graph.getEdge(nodeId)
+
+    if (!edge) {
       return undefined
     }
-
-    const edge = graph.getEdge(nodeId)!
 
     for (const edgeNodeId of edge.values()) {
       const edgeNode = graph.getNode(edgeNodeId)
@@ -44,10 +36,6 @@ export function buildFlatTree<Node>(graph: Graph<Node>): TFlatTree<Node> {
   }
 
   for (const rootNodeId of graph.getAllRoots()) {
-    if (visited.has(rootNodeId)) {
-      continue
-    }
-
     traverse(rootNodeId)
   }
 
