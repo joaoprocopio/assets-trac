@@ -7,7 +7,6 @@ export type TFlatTreeNode<Node> = TGraphNode<Node> & {
 export type TFlatTree<Node> = TFlatTreeNode<Node>[]
 
 export function buildFlatTree<Node>(graph: Graph<Node>): TFlatTree<Node> {
-  console.profile("buildFlatTree")
   const flatTree: TFlatTree<Node> = []
   const visited = new Set<TGraphNodeId>()
 
@@ -40,8 +39,6 @@ export function buildFlatTree<Node>(graph: Graph<Node>): TFlatTree<Node> {
     traverse(rootNodeId)
   }
 
-  console.profileEnd("buildFlatTree")
-
   return flatTree
 }
 
@@ -64,28 +61,20 @@ export function buildFilteredFlatTree<Node>(
   }
 
   function traverse(nodeId: TGraphNodeId, level: number = 0): void {
-    if (visited.has(nodeId)) {
-      return undefined
-    }
-
     visited.add(nodeId)
 
-    const node = graph.getNode(nodeId) as TFlatTreeNode<Node> | undefined
-
-    if (!node) {
-      return undefined
-    }
+    const node = graph.getNode(nodeId) as TFlatTreeNode<Node>
 
     if (filteredNodes.has(nodeId) || requiredParents.has(nodeId)) {
       node.level = level
       flatTree.push(node)
     }
 
-    if (!graph.hasEdge(nodeId)) {
+    const edge = graph.getEdge(nodeId)!
+
+    if (!edge) {
       return undefined
     }
-
-    const edge = graph.getEdge(nodeId)!
 
     for (const edgeNodeId of edge.values()) {
       if (!(filteredNodes.has(edgeNodeId) || requiredParents.has(edgeNodeId))) {
