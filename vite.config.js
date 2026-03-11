@@ -5,6 +5,7 @@ import svgr from "vite-plugin-svgr"
 
 export default defineConfig(() => {
   return {
+    base: "/assets-trac",
     plugins: [reactRouter(), svgr()],
     resolve: {
       alias: {

@@ -2,4 +2,5 @@
 export default {
   ssr: false,
   appDirectory: "src",
+  basename: "/assets-trac",
 }
